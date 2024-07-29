@@ -67,3 +67,7 @@ form > input {
   grid-column: span 4;
   height: 100px;
 }
+#result {
+	font-size: 48px;
+	text-align: right;
+}
