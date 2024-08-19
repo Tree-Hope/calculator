@@ -24,26 +24,34 @@ let calculationCompleted = false;
 document.addEventListener("keydown", (event) => {
   const operators = ["+", "-", "*", "/"];
 
-  if(event.key >= "0" && event.key <= "9") {
-    if(calculationCompleted) {
+  if (event.key >= "0" && event.key <= "9") {
+    if (calculationCompleted) {
       calculationCompleted = false;
     }
 
     $result.value += event.key;
-    
-    if(operator === "") {
+
+    if (operator === "") {
       firstNumber += event.key;
     } else {
       secondNumber += event.key;
     }
   }
 
-  if(event.key === "Backspace" && !calculationCompleted) {
+  if (event.key === "Backspace" && !calculationCompleted) {
+    if (firstNumber !== "") {
+      firstNumber = firstNumber.slice(0, -1);
+    } else if (operator !== "") {
+      operator = "";
+    } else if (secondNumber !== "") {
+      secondNumber = secondNumber.slice(0, -1);
+    }
+
     $result.value = $result.value.slice(0, -1);
   }
 
-  if(operators.includes(event.key)) {
-    if(calculationCompleted) {
+  if (operators.includes(event.key)) {
+    if (calculationCompleted) {
       calculationCompleted = false;
     }
 
@@ -51,17 +59,17 @@ document.addEventListener("keydown", (event) => {
     operator = event.key;
   }
 
-  if(event.key === "Enter" && firstNumber !== result) {
+  if (event.key === "Enter" && firstNumber !== result) {
     const num1 = parseFloat(firstNumber);
     const num2 = parseFloat(secondNumber);
 
-    if(operator === "+") {
+    if (operator === "+") {
       result = num1 + num2;
-    } else if(operator === "-") {
+    } else if (operator === "-") {
       result = num1 - num2;
-    } else if(operator === "*") {
+    } else if (operator === "*") {
       result = num1 * num2;
-    } else if(operator === "/") {
+    } else if (operator === "/") {
       result = num1 / num2;
     }
 
@@ -73,7 +81,7 @@ document.addEventListener("keydown", (event) => {
     calculationCompleted = true;
   }
 
-  if(event.key === "Escape") {
+  if (event.key === "Escape") {
     $result.value = "";
     firstNumber = "";
     operator = "";
