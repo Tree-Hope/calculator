@@ -19,7 +19,7 @@ let firstNumber = "";
 let operator = "";
 let secondNumber = "";
 let result;
-let calculationCompleted = false;
+let calculationCompleted = false; // 계산의 완료 여부에 따라 backspace키가 안 먹히게 하려고 만든 flag 변수
 
 document.addEventListener("keydown", (event) => {
   const operators = ["+", "-", "*", "/"];
@@ -39,12 +39,13 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "Backspace" && !calculationCompleted) {
-    if (firstNumber !== "") {
-      firstNumber = firstNumber.slice(0, -1);
+    // 숫자나 연산자 입력 후 지운 다음 다시 계산하려고 할 때 제대로 동작하도록 하기 위한 코드
+    if (secondNumber !== "") {
+      secondNumber = secondNumber.slice(0, -1);
     } else if (operator !== "") {
       operator = "";
-    } else if (secondNumber !== "") {
-      secondNumber = secondNumber.slice(0, -1);
+    } else if (firstNumber !== "") {
+      firstNumber = firstNumber.slice(0, -1);
     }
 
     $result.value = $result.value.slice(0, -1);
@@ -53,6 +54,7 @@ document.addEventListener("keydown", (event) => {
   if (operators.includes(event.key)) {
     if (calculationCompleted) {
       calculationCompleted = false;
+      result = null;
     }
 
     $result.value += `${event.key}`;
@@ -73,11 +75,10 @@ document.addEventListener("keydown", (event) => {
       result = num1 / num2;
     }
 
-    firstNumber = result;
+    firstNumber = String(result);
     $result.value = result;
     operator = "";
     secondNumber = "";
-    result = null;
     calculationCompleted = true;
   }
 
