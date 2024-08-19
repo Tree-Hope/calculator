@@ -28,26 +28,33 @@ document.addEventListener("keydown", (event) => {
     if(calculationCompleted) {
       calculationCompleted = false;
     }
+
     $result.value += event.key;
-    if(firstNumber === "") {
+    
+    if(operator === "") {
       firstNumber += event.key;
-    } else if(firstNumber !== "") {
+    } else {
       secondNumber += event.key;
     }
-  } 
+  }
+
   if(event.key === "Backspace" && !calculationCompleted) {
     $result.value = $result.value.slice(0, -1);
   }
+
   if(operators.includes(event.key)) {
     if(calculationCompleted) {
       calculationCompleted = false;
     }
+
     $result.value += `${event.key}`;
     operator = event.key;
   }
+
   if(event.key === "Enter" && firstNumber !== result) {
     const num1 = parseFloat(firstNumber);
     const num2 = parseFloat(secondNumber);
+
     if(operator === "+") {
       result = num1 + num2;
     } else if(operator === "-") {
@@ -57,6 +64,7 @@ document.addEventListener("keydown", (event) => {
     } else if(operator === "/") {
       result = num1 / num2;
     }
+
     firstNumber = result;
     $result.value = result;
     operator = "";
@@ -64,6 +72,7 @@ document.addEventListener("keydown", (event) => {
     result = null;
     calculationCompleted = true;
   }
+
   if(event.key === "Escape") {
     $result.value = "";
     firstNumber = "";
