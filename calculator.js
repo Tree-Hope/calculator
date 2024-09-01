@@ -1,4 +1,5 @@
 const $result = document.querySelector("#result");
+const $operating = document.querySelector("#operating");
 const $one = document.querySelector("#one");
 const $two = document.querySelector("#two");
 const $three = document.querySelector("#three");
@@ -19,6 +20,7 @@ let firstNumber = "";
 let operator = "";
 let secondNumber = "";
 let result;
+let printOperating = "";
 let calculationCompleted = false; // 계산의 완료 여부에 따라 backspace키가 안 먹히게 하려고 만든 flag 변수
 
 document.addEventListener("keydown", (event) => {
@@ -27,9 +29,11 @@ document.addEventListener("keydown", (event) => {
   if (event.key >= "0" && event.key <= "9") {
     if (calculationCompleted) {
       calculationCompleted = false;
+      $operating.value = "";
     }
 
-    $result.value += event.key;
+    $operating.value += event.key;
+    printOperating += event.key;
 
     if (operator === "") {
       firstNumber += event.key;
@@ -42,23 +46,26 @@ document.addEventListener("keydown", (event) => {
     // 숫자나 연산자 입력 후 지운 다음 다시 계산하려고 할 때 제대로 동작하도록 하기 위한 코드
     if (secondNumber !== "") {
       secondNumber = secondNumber.slice(0, -1);
-    } else if (operator !== "") {
-      operator = "";
-    } else if (firstNumber !== "") {
-      firstNumber = firstNumber.slice(0, -1);
+      printOperating = printOperating.slice(0, -1);
     }
 
-    $result.value = $result.value.slice(0, -1);
+    $operating.value = $operating.value.slice(0, -1);
   }
 
   if (operators.includes(event.key)) {
     if (calculationCompleted) {
       calculationCompleted = false;
       result = null;
+      $result.value = `${firstNumber} ${event.key} `;
+      printOperating = $result.value;
+      operator = event.key;
+      calculationCompleted = true;
+    } else {
+      $result.value += `${printOperating} ${event.key} `;
+      printOperating = $result.value;
+      $operating.value = "";
+      operator = event.key;
     }
-
-    $result.value += `${event.key}`;
-    operator = event.key;
   }
 
   if (event.key === "Enter" && firstNumber !== result) {
@@ -76,7 +83,8 @@ document.addEventListener("keydown", (event) => {
     }
 
     firstNumber = String(result);
-    $result.value = result;
+    $operating.value = result;
+    $result.value = `${printOperating} =`;
     operator = "";
     secondNumber = "";
     calculationCompleted = true;
@@ -84,10 +92,12 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === "Escape") {
     $result.value = "";
+    $operating.value = "";
     firstNumber = "";
     operator = "";
     secondNumber = "";
     result = "";
+    printOperating = "";
     calculationCompleted = false;
   }
 });

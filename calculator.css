@@ -61,13 +61,16 @@ h1 {
 form {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: 50px repeat(5, 1fr);
 	height: 100%;
 }
 form > input {
   grid-column: span 4;
 }
-#result {
+#result, #operating {
 	font-size: 48px;
 	text-align: right;
+}
+button {
+	font-size: 32px;
 }
