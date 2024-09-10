@@ -69,6 +69,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "Enter" && firstNumber !== result) {
+    event.preventDefault();
     const num1 = parseFloat(firstNumber);
     const num2 = parseFloat(secondNumber);
 
@@ -102,6 +103,83 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-$one.addEventListener("click", (event) => {
+const numberClicked = (num) => {
+  if (calculationCompleted) {
+    calculationCompleted = false;
+    $operating.value = "";
+  }
 
+  $operating.value += num;
+  printOperating += num;
+
+  if (operator === "") {
+    firstNumber += num;
+  } else {
+    secondNumber += num;
+  }
+};
+
+$zero.addEventListener("click", () => numberClicked(0));
+$one.addEventListener("click", () => numberClicked(1));
+$two.addEventListener("click", () => numberClicked(2));
+$three.addEventListener("click", () => numberClicked(3));
+$four.addEventListener("click", () => numberClicked(4));
+$five.addEventListener("click", () => numberClicked(5));
+$six.addEventListener("click", () => numberClicked(6));
+$seven.addEventListener("click", () => numberClicked(7));
+$eight.addEventListener("click", () => numberClicked(8));
+$nine.addEventListener("click", () => numberClicked(9));
+
+const operatorClicked = (op) => {
+  if (calculationCompleted) {
+    calculationCompleted = false;
+    result = null;
+    $result.value = `${firstNumber} ${op} `;
+    printOperating = $result.value;
+    operator = op;
+    calculationCompleted = true;
+  } else {
+    $result.value += `${printOperating} ${op} `;
+    printOperating = $result.value;
+    $operating.value = "";
+    operator = op;
+  }
+};
+
+$plus.addEventListener("click", () => operatorClicked("+"));
+$minus.addEventListener("click", () => operatorClicked("-"));
+$multiple.addEventListener("click", () => operatorClicked("*"));
+$divide.addEventListener("click", () => operatorClicked("/"));
+
+$calculate.addEventListener("click", () => {
+  const num1 = parseFloat(firstNumber);
+  const num2 = parseFloat(secondNumber);
+
+  if (operator === "+") {
+    result = num1 + num2;
+  } else if (operator === "-") {
+    result = num1 - num2;
+  } else if (operator === "*") {
+    result = num1 * num2;
+  } else if (operator === "/") {
+    result = num1 / num2;
+  }
+
+  firstNumber = String(result);
+  $operating.value = result;
+  $result.value = `${printOperating} =`;
+  operator = "";
+  secondNumber = "";
+  calculationCompleted = true;
+});
+
+$clear.addEventListener("click", () => {
+  $result.value = "";
+  $operating.value = "";
+  firstNumber = "";
+  operator = "";
+  secondNumber = "";
+  result = "";
+  printOperating = "";
+  calculationCompleted = false;
 });
